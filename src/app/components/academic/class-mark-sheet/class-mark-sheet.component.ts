@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { Mark } from '../../../models/mark.interface';
 import { SchoolSubject } from '../../../models/subject.interface';
 import { Student } from '../../../models/student.interface';
@@ -25,6 +25,7 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
 
   columnDefs = [];
   rowData = [];
+  @ViewChild('marksGrid', {read: ElementRef}) marksGridRef: ElementRef;
 
   constructor(
   ) {}
@@ -49,22 +50,46 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
 
     this.rowData = [];
 
-    // If no data for the term yet
-    if ( this.objectNotEmptyOrNull(this.termMarks) ) {
-      
-      console.log('There are marks');
+    for (let i = 0; i < this.students.length; i++ ) {
 
-    } else {
-      for (let i = 0; i < this.students.length; i++ ) {
-        this.rowData.push(
-          { name: `${this.students[i].names} ${this.students[i].surname}` }
+      const studentRow = { name: `${this.students[i].names} ${this.students[i].surname}` };
+
+      for (let k = 0; k < this.schoolSubjects.length; k++) { 
+
+        const studentSubjectMark = this.termMarks
+          .find(mark => mark.student_id === this.students[i].id && mark.subject_id === this.schoolSubjects[k].id);
+
+        this.populateStudentMarksForSubject(
+          studentRow, 
+          this.schoolSubjects[k].id, 
+          studentSubjectMark ? studentSubjectMark.ca_mark : 0, 
+          studentSubjectMark ? studentSubjectMark.exam_mark : 0
         );
       }
+
+      this.rowData.push(studentRow);
     }
+
+  }
+
+  populateStudentMarksForSubject(studentRowObject, subjectId, CAMark, ExamMark) {
+    Object.defineProperty(studentRowObject, `ca${subjectId}`, {
+      value: CAMark,
+      writable: true
+    });
+
+    Object.defineProperty(studentRowObject, `exam${subjectId}`, {
+      value: ExamMark,
+      writable: true
+    });
+
+    return studentRowObject;
   }
 
   onGridReady(params) {
     params.api.sizeColumnsToFit();
+    params.api.setDomLayout('autoHeight');
+    this.marksGridRef.nativeElement.style.height = '';
   }
 
   createColumns() {
@@ -84,6 +109,18 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
   
   retryFetchMarkSheet() {
     this.retryFetchMarks.emit(null);
+  }
+
+  saveMarkSheet() {
+    console.log( this.rowData );
+  }
+
+  printReports() {
+    console.log('Print report...');
+  }
+
+  exportToExcel() {
+    console.log('Exporting to excel');
   }
 
   objectNotEmptyOrNull(testObject): boolean {
