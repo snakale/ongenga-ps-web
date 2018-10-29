@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Student } from '../../../models/student.interface';
 import { Store } from '@ngrx/store';
 import { ApplicationState } from '../../../state/application-state.model';
-import { Observable, BehaviorSubject, of as observableOf } from 'rxjs';
-import { tap, first, map, takeUntil, takeWhile, catchError } from 'rxjs/operators';
+import { BehaviorSubject, of as observableOf } from 'rxjs';
+import { tap, first, map, catchError } from 'rxjs/operators';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 import range from 'lodash/range';
@@ -16,6 +16,7 @@ import { SchoolGrade } from 'src/app/enums/grades.enum';
 import { SchoolClass } from 'src/app/enums/class.enum';
 import { SchoolSubject } from 'src/app/models/subject.interface';
 import { Dictionary } from '@ngrx/entity/src/models';
+import { SchoolTerm } from 'src/app/enums/school-term.enum';
 
 @Component({
   selector: 'app-academic',
@@ -35,7 +36,7 @@ export class AcademicDashboardComponent implements OnInit {
     ...[this.currentAcademicYear]
   ].sort( (a, b) =>  b - a );
 
-  academicTrimesters: string[] = ['First Term', 'Second Term', 'Third Term'];
+  academicTrimesters = SchoolTerm;
 
   currentUser: User;
   academicClasses: AcademicClass[] = [];
@@ -47,6 +48,8 @@ export class AcademicDashboardComponent implements OnInit {
   selectedAcademicClass: AcademicClass;
   selectedAcademicYear: number;
   selectedAcademicTrimester: string;
+
+  activeMarkSheetParams: any;
   
   // Mark Sheet Status
   busyfetchingMarks: boolean;
@@ -172,13 +175,14 @@ export class AcademicDashboardComponent implements OnInit {
     this.busyfetchingMarks = true;
     this.markSheetError = false;
 
-    const result = await this.academicService
-      .getMarkSheet(
-        this.selectedAcademicClass.grade, 
-        this.selectedAcademicClass.schoolClass, 
-        this.selectedAcademicYear,
-        this.selectedAcademicTrimester
-      );
+    this.activeMarkSheetParams = {
+      grade: this.selectedAcademicClass.grade, 
+      schoolClass: this.selectedAcademicClass.schoolClass, 
+      year: this.selectedAcademicYear,
+      term: this.selectedAcademicTrimester
+    };
+
+    const result = await this.academicService.getMarkSheet(this.activeMarkSheetParams);
 
     if ( result.success === true ) {
       this.marks$.next( result.data );
@@ -191,8 +195,14 @@ export class AcademicDashboardComponent implements OnInit {
 
   }  
 
-  saveMarks(marks: Mark[]) {
+  async saveMarks(marks: Mark[]) {
+    const result = await this.academicService.saveMarkSheetMarks(marks, this.activeMarkSheetParams);
 
+    if ( result.success ) {
+      this.snackBar.open(result.message, '', {duration: 3000});
+    } else {
+      this.snackBar.open(result.message, 'Retry', {duration: 3000});
+    }
   }
 }
 

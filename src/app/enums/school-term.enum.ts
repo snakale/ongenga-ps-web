@@ -1,5 +1,5 @@
 export enum SchoolTerm {
-    term1,
-    term2,
-    term3
+    FIRST_TERM,
+    SECOND_TERM,
+    THIRD_TERM
 }

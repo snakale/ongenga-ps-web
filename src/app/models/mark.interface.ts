@@ -3,13 +3,13 @@ import { User } from './user.interface';
 
 export interface Mark {
     id?: number;
-    student_id: number;
-    subject_id: number;
+    studentId: number;
+    subjectId: number;
     ca_mark: number;
     exam_mark: number;
     final_mark?: number;
-    year: number;
-    term: SchoolTerm;
+    year?: number;
+    term?: SchoolTerm;
 }
 
 export interface MarksSearchParams {

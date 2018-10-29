@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { Mark } from '../../../models/mark.interface';
 import { SchoolSubject } from '../../../models/subject.interface';
 import { Student } from '../../../models/student.interface';
+import { SchoolTerm } from 'src/app/enums/school-term.enum';
 
 @Component({
   selector: 'app-class-mark-sheet',
@@ -16,7 +17,7 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
   @Input() markSheetError: boolean;
   @Input() AcademicClass: string;
   @Input() AcademicYear: number;
-  @Input() AcademicTrimester: string;
+  @Input() AcademicTrimester: SchoolTerm;
   @Input() termMarks: Mark[];
   @Input() markSheetInitialised: boolean;
 
@@ -27,8 +28,7 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
   rowData = [];
   @ViewChild('marksGrid', {read: ElementRef}) marksGridRef: ElementRef;
 
-  constructor(
-  ) {}
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
 
@@ -52,12 +52,15 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
 
     for (let i = 0; i < this.students.length; i++ ) {
 
-      const studentRow = { name: `${this.students[i].names} ${this.students[i].surname}` };
+      const studentRow = { 
+        studentId: this.students[i].id,
+        name: `${this.students[i].names} ${this.students[i].surname}` 
+      };
 
       for (let k = 0; k < this.schoolSubjects.length; k++) { 
 
         const studentSubjectMark = this.termMarks
-          .find(mark => mark.student_id === this.students[i].id && mark.subject_id === this.schoolSubjects[k].id);
+          .find(mark => mark.studentId === this.students[i].id && mark.subjectId === this.schoolSubjects[k].id);
 
         this.populateStudentMarksForSubject(
           studentRow, 
@@ -92,16 +95,46 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
     this.marksGridRef.nativeElement.style.height = '';
   }
 
+  numberToPercentageFormatter({value}) {
+    return value + ' %';
+  }
+
+  numberParser({newValue, oldValue}) {
+    if ( isNaN(newValue) ) {
+      return oldValue;
+    } else {
+      if ( newValue < 0 || newValue > 100 ) {
+        return oldValue;
+      }
+      return newValue;
+    }
+  }
+
   createColumns() {
 
-    this.columnDefs = [{ headerName: 'Name', field: 'name' }];
+    this.columnDefs = [
+      { headerName: 'Name', field: 'name' },
+      { headerName: 'studentId', field: 'studentId', hide: true }
+    ];
 
     for (let k = 0; k < this.schoolSubjects.length; k++) {
       this.columnDefs.push({
         headerName: this.schoolSubjects[k].name,  
         children: [
-          { headerName: 'CA', editable: true, field: `ca${this.schoolSubjects[k].id}`},
-          { headerName: 'Exam', editable: true, field: `exam${this.schoolSubjects[k].id}`}
+          { 
+            headerName: 'CA', 
+            editable: true, 
+            field: `ca${this.schoolSubjects[k].id}`, 
+            valueFormatter: this.numberToPercentageFormatter,
+            valueParser: this.numberParser
+          },
+          { 
+            headerName: 'Exam', 
+            editable: true, 
+            field: `exam${this.schoolSubjects[k].id}`,
+            valueFormatter: this.numberToPercentageFormatter,
+            valueParser: this.numberParser
+          }
         ]
       });
     }
@@ -112,7 +145,25 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
   }
 
   saveMarkSheet() {
-    console.log( this.rowData );
+
+    const marks: Mark[] = [];
+
+    for (let k = 0 ; k < this.rowData.length; k++) {
+      const studentRow = this.rowData[k];
+
+      for (let i = 0; i < this.schoolSubjects.length; i++) {
+        const subjectId = this.schoolSubjects[i].id;
+        marks.push({
+          studentId: studentRow.studentId,
+          subjectId: subjectId,
+          ca_mark: studentRow[`ca${subjectId}`],
+          exam_mark: studentRow[`exam${subjectId}`],
+        });
+      }
+    }
+
+    this.saveMarks.emit(marks);
+
   }
 
   printReports() {

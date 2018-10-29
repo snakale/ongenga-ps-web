@@ -23,8 +23,8 @@
         </div>
         <div class="grid-item">
             <mat-select placeholder="Select Academic Trimester" [(value)]="selectedAcademicTrimester">
-                <mat-option *ngFor="let academicTrimester of academicTrimesters" [value]="academicTrimester">
-                    {{ academicTrimester }}
+                <mat-option *ngFor="let academicTrimester of academicTrimesters | enumToArray; index as i" [value]="i">
+                    {{ academicTrimester.replace('_', ' ') }}
                 </mat-option>
             </mat-select>
         </div>
