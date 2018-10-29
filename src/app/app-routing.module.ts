@@ -13,14 +13,14 @@ const routes: Routes = [
     loadChildren: './components/login/login.component.module#LoginComponentModule',
   },
   { 
-    path: 'academic', 
+    path: 'mark-sheets', 
     canActivate: [LoginRouteGuard],
     loadChildren: './components/academic/academic.component.module#AcademicComponentModule'
   },
   { 
     path: '', 
     canActivate: [LoginRouteGuard],
-    loadChildren: './components/home/home.component.module#HomeComponentModule'
+    loadChildren: './components/academic/academic.component.module#AcademicComponentModule'
   },
   { 
     path: '**', 

@@ -8,7 +8,7 @@
 
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import { Observable, merge } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserActionsUnion, UserActionTypes, AddUsers, SetLoggedInUser, FailedToLoadAuthState, UpdateUser } from './actions';
 import { AdminService } from '../../services/admin.service';
 import { AuthService } from '../../services/auth.service';
