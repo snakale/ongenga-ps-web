@@ -1,0 +1,54 @@
+<div class="component-body">
+  <mat-toolbar color="primary">
+      System Administration
+    </mat-toolbar>
+
+    <mat-tab-group>
+      <mat-tab label="Subjects" *ngIf="isUserAdmin">
+        <br />
+        <app-admin-subjects-list
+          (removeSubject)="removeSubject($event)"
+          (addNewSubjectClicked)="onAddNewSubject()"
+          (subjectClicked)="selectSubjectForEditing($event)"
+          [subjects]="allSchoolSubjects$ | async">
+        </app-admin-subjects-list>
+      </mat-tab>
+      <mat-tab label="System Users" *ngIf="isUserAdmin">
+        <br />
+        <app-admin-users-list
+          (removeUser)="removeUser($event)"
+          (userClicked)="selectUserForEditing($event)"
+          (addNewUserClicked)="onAddNewUser()"
+          [users]="allAppUsers$ | async">
+        </app-admin-users-list>
+      </mat-tab>
+
+      <mat-tab label="Students" *ngIf="isUserAdmin">
+        <app-students-list
+          [listEditable]="true"
+          [students]="students$ | async"
+          [teachers]="teachers$ | async"
+          (studentClicked)="selectStudent($event)"
+          (removeStudent)="removeStudent($event)"
+          (addNewStudentClicked)="addNewStudent()"
+        ></app-students-list>
+      </mat-tab>
+
+      <mat-tab label="My Profile">
+        <mat-grid-list cols="2" rowHeight="400px">
+          <mat-grid-tile [colspan]="1">
+            <app-user-profile-form
+              (formSubmit)="updateUserProfile($event)"
+              [user]="currentUser$ | async">
+            </app-user-profile-form>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <app-user-password-form 
+              (formSubmit)="updateCurrentUserPassword($event)">
+            </app-user-password-form>
+          </mat-grid-tile>
+        </mat-grid-list>        
+      </mat-tab>
+
+    </mat-tab-group>
+</div>

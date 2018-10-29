@@ -1,0 +1,35 @@
+<form [formGroup]="userForm">
+  <mat-form-field class="form-full-width">
+      <input matInput placeholder="Name(s): " formControlName="names">
+      <mat-error *ngIf="names.invalid && names.touched">
+          Please input a valid name(s) for this user
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-full-width">
+      <input matInput placeholder="Surname: " formControlName="surname">
+      <mat-error *ngIf="surname.invalid && surname.touched">
+          Please input a valid surname for this user
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-full-width">
+      <input matInput placeholder="Email: " formControlName="email">
+      <mat-error *ngIf="email.invalid && email.touched">
+          Please input a valid email for this user
+      </mat-error>
+  </mat-form-field>
+
+  <!--mat-form-field class="form-full-width">
+      <mat-select placeholder="Select User Role" formControlName="role">
+          <mat-option *ngFor="let role of userRoles | enumToArray" [value]="role">
+          {{ role }}
+          </mat-option>
+      </mat-select>
+  </mat-form-field-->
+
+  <button mat-raised-button color="primary" (click)="submitForm()" [disabled]="!userForm.touched || userForm.invalid">
+        Update My Profile
+    </button>
+
+</form>

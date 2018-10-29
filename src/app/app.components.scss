@@ -1,0 +1,15 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.app-debug-menu{ 
+    background: #fff;
+    list-style: none;
+    margin:0;padding:0;
+    li {
+        display: inline-block; 
+        a {display: inline-block;padding: 5px 25px;text-transform: capitalize;}
+    }
+}
+
+.component-body {
+    background-color: #FFFFFF;
+}

@@ -1,0 +1,25 @@
+.page-title{
+    text-align:center; padding:25px 0;border-bottom:2px solid #4b0082;margin:0;
+    background: #eeeeee; color:#4b0082;
+}
+
+form{
+
+    img{width:70px; height:auto;margin:auto;display:block;}
+
+    max-width:450px;margin:auto;margin-top:50px;background-color: #c1c1c1;padding:35px;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,cccccc+100;Gren+3D */
+    background: #eeeeee; /* Old browsers */
+    background: -moz-linear-gradient(top, #eeeeee 0%, #cccccc 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #eeeeee 0%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #eeeeee 0%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+
+    mat-form-field, input, button{width:100%;}
+    mat-form-field {margin-bottom:20px;}
+
+    .success{color:green;}
+    .error{color:red;}
+
+}

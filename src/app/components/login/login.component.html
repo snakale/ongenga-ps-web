@@ -1,0 +1,39 @@
+<div class="bg">
+    
+    <h1 class="page-title">Please login before you can proceed</h1>
+    
+    <form [formGroup]="loginForm" *ngIf="2">
+        <img src="../../../assets/img/coat_of_arms.png" alt="">
+        <mat-form-field>
+            <input matInput placeholder="Email: " formControlName="email">
+
+            <mat-error *ngIf="email.invalid && email.touched">
+                Your email is invalid
+            </mat-error>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <input matInput placeholder="Password: " formControlName="password" type="password">
+
+            <!--mat-hint align="end">Password must be atleast 5 characters long</mat-hint-->
+
+            <mat-error *ngIf="password.invalid && password.touched">
+                Password must be atleast 5 characters long
+            </mat-error>
+        </mat-form-field>
+
+        <button 
+            mat-raised-button 
+            [disabled]="loginForm.invalid || submissionAuthenticating" 
+            (click)="authenticateUser()">Login
+        </button>
+
+        <div *ngIf="authenticationMessage" [ngClass]="authenticationSuccess ? 'success': 'error'">
+            {{authenticationMessage}}
+        </div>
+    </form>
+
+
+</div>

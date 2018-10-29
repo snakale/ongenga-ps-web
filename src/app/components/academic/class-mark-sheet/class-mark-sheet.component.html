@@ -1,0 +1,33 @@
+
+<div *ngIf="!busyfetchingMarks && !markSheetError && markSheetInitialised" class="ng-template-example">
+
+    <br>
+    
+    <ag-grid-angular 
+        style="width: 100%;height:500px;" 
+        class="ag-theme-balham"
+        [enableSorting]="true"
+        [enableFilter]="true"
+        [rowData]="rowData" 
+        [columnDefs]="columnDefs"
+        [animateRows]="true"
+        (gridReady)="onGridReady($event)"
+        >
+    </ag-grid-angular>
+
+</div>
+
+<ng-template [ngIf]="!markSheetInitialised">
+    <h2>Please select a mark sheet to display</h2>
+</ng-template>
+
+<ng-template [ngIf]="busyfetchingMarks">
+    <div class="ng-template-example">Loading Indicator</div>
+</ng-template>
+
+<ng-template [ngIf]="markSheetError">
+    <div class="ng-template-example">
+        MarkSheet Error...
+        <a (click)="retryFetchMarkSheet()">Retry</a>
+    </div>
+</ng-template>

@@ -1,0 +1,103 @@
+<div class="component-body">
+    <mat-toolbar color="primary">{{ pageTitle }}</mat-toolbar>
+          
+    <form [formGroup]="studentForm">
+        <h4>Student</h4>
+        <mat-form-field>
+            <input matInput placeholder="Name: " formControlName="names">
+            <mat-error *ngIf="names.invalid && names.touched">
+                Please provide a name for the student
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Surname: " formControlName="surname">
+            <mat-error *ngIf="surname.invalid && surname.touched">
+                Please provide a surname for the student
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select placeholder="Select Gender" formControlName="gender">
+                <mat-option value="male">Male</mat-option>
+                <mat-option value="female">Female</mat-option>
+            </mat-select>
+            <mat-error *ngIf="gender.invalid && gender.touched">
+                Please provide a gender for the student
+            </mat-error>
+        </mat-form-field>
+
+        <h4>Student Class</h4>
+
+        <mat-form-field class="form-full-width">
+            <mat-select placeholder="Select Register Teacher" formControlName="teacher">
+                <mat-option *ngFor="let teacher of (teachers$ | async)" [value]="teacher.id">
+                {{ teacher.names + ' ' + teacher.surname }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field [hidden]="teacher.value == ''">
+            <mat-select placeholder=" Select Student's Grade" formControlName="studentGrade">
+                <mat-option *ngFor="let grade of schoolGrades | enumToArray; index as i" [value]="i">
+                {{ grade }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field [hidden]="teacher.value == ''">
+            <mat-select placeholder=" Select Student's Class group" formControlName="studentClass">
+                <mat-option *ngFor="let class of schoolClasses | enumToArray; index as i" [value]="i">
+                {{ class }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <h4>Parents/Gardians</h4>
+        <h6>Parent/Gaurdian 1</h6>
+        <div formGroupName="parent1">
+            <mat-form-field>
+                <input matInput placeholder="Name: " formControlName="name">
+            </mat-form-field>
+        
+            <mat-form-field>
+                <input matInput placeholder="Surname: " formControlName="surname">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <textarea matInput placeholder="Contact Details: " formControlName="contactDetails"></textarea>
+            </mat-form-field>
+        </div>
+        <h6>Parent/Gaurdian 2</h6>
+        <div formGroupName="parent2">
+            <mat-form-field>
+                <input matInput placeholder="Name: " formControlName="name">
+            </mat-form-field>
+        
+            <mat-form-field>
+                <input matInput placeholder="Surname: " formControlName="surname">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <textarea matInput placeholder="Contact Details: " formControlName="contactDetails"></textarea>
+            </mat-form-field>
+        </div>
+
+    </form>
+
+    <mat-card class="footer">
+        <div class="button-group">
+            <button 
+                mat-raised-button color="primary" 
+                (click)="saveStudent()" 
+                [disabled]="!studentForm.valid || busySubmitting || !studentForm.touched">
+                Save
+            </button>
+            <button mat-raised-button color="primary" (click)="goBack()">
+                Back
+            </button>
+        </div>
+    </mat-card> 
+</div>

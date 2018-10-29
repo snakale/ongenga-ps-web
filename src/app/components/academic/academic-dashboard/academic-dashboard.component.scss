@@ -1,0 +1,38 @@
+
+.academic-years-list{
+    height:50px; width:100px; overflow: hidden; list-style: none;
+    background: #c1c1c1;
+    margin:0; padding:0;
+
+    li{
+        display: block; text-align: center;background: red;height:50px;font-size:40px;
+        margin:0; padding:0;
+    }
+}
+
+/*Remove underline from select component**/
+::ng-deep .mat-form-field-underline, .mat-select-arrow-wrapper {
+    display: none !important;
+}
+
+/*"Hide" select component's caret*/
+.mat-select-arrow{color:#fff !important;}
+.mat-select:focus:not(.mat-select-disabled).mat-primary .mat-select-arrow {
+    color: #fff;
+}
+
+.grid-container {
+
+    display: grid; background-color:#fff; box-shadow: 0 0 10px #ccc;
+    grid-template-columns: auto auto auto auto;grid-gap: 0 0;padding:10px;height:20px;
+
+    .grid-item{
+        width:100%;
+    }
+
+    .btn-get-mark-sheet{
+        margin-top:0;width:100%;text-align: center;
+    }
+}
+
+  

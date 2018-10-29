@@ -1,0 +1,50 @@
+<div class="component-body">
+    <mat-toolbar color="primary">
+        Mark Sheets
+    </mat-toolbar>
+
+    <div class="grid-container">
+        <div class="grid-item">
+            <mat-select placeholder="Select Class" [(value)]="selectedAcademicClass" (selectionChange)="academicClassChanged()">
+                <mat-option 
+                    *ngFor="let academicClass of academicClasses; let i = index" 
+                    [value]="academicClass"
+                    [disabled]="!isAdminUser && academicClass.label != teacherClassLabel">
+                    {{ selectClassOption(academicClass.label, teacherClassLabel, isAdminUser) }}
+                </mat-option>
+            </mat-select>
+        </div>
+        <div class="grid-item">
+            <mat-select placeholder="Select Academic Year" [(value)]="selectedAcademicYear">
+                <mat-option *ngFor="let academicYear of academicYears" [value]="academicYear">
+                    {{ academicYear }}
+                </mat-option>
+            </mat-select>
+        </div>
+        <div class="grid-item">
+            <mat-select placeholder="Select Academic Trimester" [(value)]="selectedAcademicTrimester">
+                <mat-option *ngFor="let academicTrimester of academicTrimesters" [value]="academicTrimester">
+                    {{ academicTrimester }}
+                </mat-option>
+            </mat-select>
+        </div>
+        <div class="grid-item">
+            <button mat-button mat-raised-button class="btn-get-mark-sheet" (click)="getMarkSheet()">Get Mark Sheet</button>
+        </div>
+    </div>
+
+    <app-class-mark-sheet
+        [markSheetInitialised]="userHasSearched"
+        [AcademicClass]="selectedAcademicClass"
+        [AcademicYear]="selectedAcademicYear"
+        [AcademicTrimester]="selectedAcademicTrimester"
+        [termMarks]="marks$ | async"
+        [busyfetchingMarks]="busyfetchingMarks"
+        [markSheetError]="markSheetError"
+        [students]="students$ | async"
+        [schoolSubjects]="classSubjects$ | async"
+        (retryFetchMarks)="getMarkSheet()"
+        (saveMarks)="saveMarks($event)"
+    ></app-class-mark-sheet>
+
+</div> 
