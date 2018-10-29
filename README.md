@@ -2,6 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
+## Environment Setup
+Be sure to install NodeJS and NPM. Then, navigate to the repository and run 'npm install'
+
 ## Development server
 
 Run `npm run start-dev` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
