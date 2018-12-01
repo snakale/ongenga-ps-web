@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Student } from '../../../models/student.interface';
 import { Store } from '@ngrx/store';
 import { ApplicationState } from '../../../state/application-state.model';
@@ -17,14 +17,18 @@ import { SchoolClass } from 'src/app/enums/class.enum';
 import { SchoolSubject } from 'src/app/models/subject.interface';
 import { Dictionary } from '@ngrx/entity/src/models';
 import { SchoolTerm } from 'src/app/enums/school-term.enum';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';  
 
 @Component({
   selector: 'app-academic',
   templateUrl: './academic-dashboard.component.html',
-  styleUrls: ['./academic-dashboard.component.scss'],
+  styleUrls: ['./academic-dashboard.component.scss', './bootstrap-grid.min.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class AcademicDashboardComponent implements OnInit {
+
+  @ViewChild('studentAcademicReport') reportContent: ElementRef;
 
   students$ = new BehaviorSubject<Student[]>([]);
   classSubjects$ = new BehaviorSubject<SchoolSubject[]>(null);
@@ -68,6 +72,46 @@ export class AcademicDashboardComponent implements OnInit {
 
   getTeacherClass(teacher: User) {
     return `${teacher.teacherGrade + 1}${SchoolClass[teacher.teacherClass]}`;
+  }
+
+  createPDFReports(marks: Mark[]) {
+    this.downloadPDFReport('SammyTest');
+  }
+
+  downloadPDFReport(documentName: string) {
+    /*const doc = new jsPDF();
+
+    const specialElementHandlers = {
+      '#editor': function(element, renderer) {
+        return true;
+      }
+    };
+
+    const content  = this.reportContent.nativeElement;
+
+    console.log(this.reportContent);
+
+    doc.fromHTML(content.innerHTML, 15, 15, {
+      'width': 190,
+      'elementHandlers': specialElementHandlers
+    });
+
+    doc.save(documentName);*/
+
+    html2canvas(this.reportContent.nativeElement).then(canvas => {  
+      // Few necessary setting options  
+      const imgWidth = 208;   
+      const pageHeight = 295;    
+      const imgHeight = canvas.height * imgWidth / canvas.width;  
+      const heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png');  
+      const pdfDoc = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+      const position = 0;  
+      pdfDoc.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);  
+      pdfDoc.save('MYPdf.pdf'); // Generated PDF   
+    });  
+
   }
 
   ngOnInit() {

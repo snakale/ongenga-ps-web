@@ -23,6 +23,7 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
 
   @Output() retryFetchMarks = new EventEmitter<any>();
   @Output() saveMarks = new EventEmitter<Mark[]>();
+  @Output() printPDFReport = new EventEmitter<Mark[]>();
 
   columnDefs = [];
   rowData = [];
@@ -144,8 +145,16 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
     this.retryFetchMarks.emit(null);
   }
 
-  saveMarkSheet() {
+  exportMarksToExcel() {
 
+  }
+
+  printReports() {
+    const marks: Mark[] = this.getMarksArray();
+    this.printPDFReport.emit(marks);
+  }
+
+  getMarksArray(): Mark[] {
     const marks: Mark[] = [];
 
     for (let k = 0 ; k < this.rowData.length; k++) {
@@ -162,16 +171,14 @@ export class ClassMarkSheetComponent implements OnInit, OnChanges {
       }
     }
 
+    return marks;
+  }
+
+  saveMarkSheet() {
+
+    const marks: Mark[] = this.getMarksArray();
     this.saveMarks.emit(marks);
 
-  }
-
-  printReports() {
-    console.log('Print report...');
-  }
-
-  exportToExcel() {
-    console.log('Exporting to excel');
   }
 
   objectNotEmptyOrNull(testObject): boolean {

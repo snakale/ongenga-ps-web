@@ -8,7 +8,6 @@ import { UserActionTypes } from '../users/actions';
 import { StudentsService } from '../../services/students.service';
 import { Student } from '../../models/student.interface';
 
-
 @Injectable()
 export class StudentsStateEffects {
 

@@ -1,1 +1,54 @@
 .app-control-btn{ margin:10px;}
+
+.error-select-marksheet, .error-nostudents-marksheet{max-width:550px;margin:30px auto;padding:35px 0;font-size:2em;}
+.error-general-marksheet{
+    h2{max-width:550px;margin:30px auto;padding:35px 0;font-size:1.5em;color:red;}   
+}
+
+.error-nostudents-marksheet {
+    max-width:550px;margin:30px auto;padding:35px 0;
+    &__title{font-size:1.5em;}
+    &__description{font-size:0.8em;}
+}
+
+.loader {
+    border: 8px solid #fff; border-radius: 50%; border-top: 8px solid #3498db;margin:3em auto;
+    width: 80px; height: 80px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content; 
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    } 
+}
+
+// generic transform
+@mixin transform($transforms) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+// rotate
+@mixin rotate ($deg) {
+    @include transform(rotate(#{$deg}deg));
+}
+
+@include keyframes(spin) {
+    0% { @include rotate( 0 ) }
+    100% { @include rotate( 360) }
+}
+
+

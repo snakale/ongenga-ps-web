@@ -1,5 +1,5 @@
 
-<div *ngIf="!busyfetchingMarks && !markSheetError && markSheetInitialised" class="ng-template-example">
+<div *ngIf="!busyfetchingMarks && !markSheetError && markSheetInitialised && students.length" class="ng-template-example">
 
     <br>
     
@@ -20,27 +20,34 @@
         Save
     </button>
 
-    <button mat-raised-button color="primary" class='app-control-btn' (click)="saveMarkSheet()">
+    <button mat-raised-button color="primary" class='app-control-btn' (click)="exportMarksToExcel()">
         Export to Excel
     </button>
 
-    <button mat-raised-button color="primary" class='app-control-btn' (click)="saveMarkSheet()">
+    <button mat-raised-button color="primary" class='app-control-btn' (click)="printReports()">
         Print all Reports 
     </button>
 
 </div>
 
 <ng-template [ngIf]="!markSheetInitialised">
-    <h2>Please select a mark sheet to display</h2>
+    <h2 class="error-select-marksheet">Please select a mark sheet to display</h2>
+</ng-template>
+
+<ng-template [ngIf]="markSheetInitialised && !students.length">
+    <div class="error-nostudents-marksheet">
+        <h2 class="error-nostudents-marksheet__title">No students</h2>
+        <p class="error-nostudents-marksheet__description">There are no students in the system registered under this class group. Please add students that belong to this class group and try again</p>
+    </div>
 </ng-template>
 
 <ng-template [ngIf]="busyfetchingMarks">
-    <div class="ng-template-example">Loading Indicator</div>
+    <div class="loader"></div>
+    <br>
 </ng-template>
 
 <ng-template [ngIf]="markSheetError">
-    <div class="ng-template-example">
-        MarkSheet Error...
-        <a (click)="retryFetchMarkSheet()">Retry</a>
+    <div class="error-general-marksheet">
+        <h2>MarkSheet Error... <a (click)="retryFetchMarkSheet()">Retry</a></h2>
     </div>
 </ng-template>
