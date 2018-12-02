@@ -5,6 +5,7 @@ import { of as ObservableOf, Observable } from 'rxjs';
 import { AppReturnType } from '../models/return-type.interface';
 import { Student } from '../models/student.interface';
 import { Mark, MarksSearchParams } from '../models/mark.interface';
+import { Parent } from '../models/parent.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,18 @@ export class StudentsService {
         map( result => result ? result : {success: false, message: 'Unexpected null returned'}),
         catchError( err => ObservableOf({success: false, message: err.message}) )
       );
+  }
+
+  getStudentParents(studentId): Promise<any>  {
+
+    const params = { studentId };
+
+    return this.http
+      .get<AppReturnType>(`api/students/parents`, { params: params } )
+      .pipe(
+        map( result => (result && result.success === true) ? result.data : []),
+        catchError( () => ObservableOf(undefined) )
+      ).toPromise();
   }
 
   getTeacherTermMarks(searchParams: MarksSearchParams): Observable<Mark[]> {

@@ -11,7 +11,16 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatGridListModule, MatTabsModule, MatIconModule, MatSnackBarModule, MatSnackBar, MatDialogModule } from '@angular/material';
+import { 
+    MatGridListModule, 
+    MatTabsModule, 
+    MatIconModule, 
+    MatSnackBarModule, 
+    MatSnackBar, 
+    MatDialogModule,
+    MatNativeDateModule
+} from '@angular/material';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { EnumToArrayPipe } from '../../pipes/enumTorArray.pipe';
 import { EnumToStringPipe } from '../../pipes/enumToString.pipe';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
@@ -36,7 +45,8 @@ const components = [
     MatIconModule,
     MatSnackBarModule,
     MatDialogModule,
-    
+    MatDatepickerModule,
+    MatNativeDateModule
 ];
 
 @NgModule({

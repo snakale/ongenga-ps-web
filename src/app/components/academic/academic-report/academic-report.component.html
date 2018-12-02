@@ -1,0 +1,81 @@
+
+<div class="out-of-view" #studentAcademicReport id="studentAcademicReport">
+        <h1 class="out-of-view__title">REPORT</h1>
+        <div id="main-report-container" class="container">
+            <header class="row">
+                <div class="col-sm-9" id="document-title-container">
+                    <h2>ONGENGA ENGLISH PRIVATE PRIMARY SCHOOL REPORT</h2>
+                    <div class="row" id="report-details">
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-3 report-detail-label">School:</div>
+                                <div class="col-sm-9 right-align">ONGENGA ENGLISH PRIVATE PS</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 report-detail-label">Circuit:</div>
+                                <div class="col-sm-9 right-align"><span class="right-align">Ohangwena Region</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 report-detail-label">Address:</div>
+                                <div class="col-sm-9 right-align">ONGENGA ENGLISH PRIVATE PS <br>Erf 45</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 report-detail-label">Phone:</div>
+                                <div class="col-sm-9 right-align">065 xx xxxx</div>
+                            </div>            
+                        </div>
+                        <div class="col-sm-4" id="school-stamp-box">
+                            <p>SCHOOL STAMP</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" id="coat_of_arms_container">
+                    <img src="assets/img/coat_of_arms.png" alt="">
+                </div>
+            </header>
+    
+            <main id="report-body">
+                <table class="marks-table">
+                    <tr>
+                        <th class='marks-table__dob-col'>Date of birth: <br> DOB</th>
+                        <th colspan="3">Grade {{academicClass?.grade + 1}}<br> Term / </th>
+                    </tr>
+                    <tr>
+                        <th>Subjects</th>
+                        <th>Points obtained</th>
+                        <th>Symbol</th>
+                        <th>Class <br>avg</th>
+                    </tr>
+                </table>
+                <section id="remarks"></section>
+            </main>
+            
+            <p>School Reopens: </p>
+            <p>POSITION: out of </p>
+            <p>DAYS ABSENT: out of </p>
+    
+            <footer id="report-footer">
+                <section id="grades"></section>
+                <section id="signatures">
+                    <div class="row signatures-block">
+                        <div class="col">CLASS TEACHER</div>
+                        <div class="col">Name</div>
+                        <div class="col">Signature</div>
+                        <div class="col">Date</div>
+                    </div>
+                    <div class="row signatures-block">
+                        <div class="col">PRINCIPAL</div>
+                        <div class="col">Name</div>
+                        <div class="col">Signature</div>
+                        <div class="col">Date</div>
+                    </div>
+                    <div class="row signatures-block">
+                        <div class="col">PARENT</div>
+                        <div class="col">Name</div>
+                        <div class="col">Signature</div>
+                        <div class="col">Date</div>
+                    </div>
+                </section>
+            </footer>
+        </div>
+    </div>

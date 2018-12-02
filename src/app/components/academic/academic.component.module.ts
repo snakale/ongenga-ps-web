@@ -5,13 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { ClassMarkSheetComponent } from './class-mark-sheet/class-mark-sheet.component';
 import { SharedComponentsModule } from '../shared/shared.module';
 import { AgGridModule } from 'ag-grid-angular';
+import { AcademicReportComponent } from './academic-report/academic-report.component';
 
 const routes: Routes = [
   { path: '', component: AcademicDashboardComponent }
 ];
 
 @NgModule({
-  declarations:  [AcademicDashboardComponent, ClassMarkSheetComponent],
+  declarations:  [AcademicDashboardComponent, ClassMarkSheetComponent, AcademicReportComponent],
   imports: [
     SharedComponentsModule,
     FormsModule,

@@ -35,8 +35,6 @@ export class AdminComponent implements OnInit {
 
   userPasswordFormReadyToSubmit = new BehaviorSubject<boolean>(false);
 
-  isUserAdmin: boolean;
-
   constructor(
     private store: Store<ApplicationState>,
     private router: Router,
@@ -47,25 +45,38 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.allAppUsers$ = this.store.select('users').pipe(map(userState => this.mapDictionaryToEntities(userState.entities)));
-    this.allSchoolSubjects$ = this.store.select('subjects').pipe(
-      map(subjectsState => this.mapDictionaryToEntities(subjectsState.entities))
-    );
-    this.currentUser$ = this.store.select('users').pipe(
-      map(users => users.loggedInUser),
-      tap(val => this.currentUser = val),
-      tap( user => this.isUserAdmin = user.role === UserRoles.Administrator )
-    );
 
-    this.teachers$ = this.store.select('users').pipe(
-      map( (entityObject: UsersState) => this.mapDictionaryToEntities(entityObject.entities) ),
-      map( users => this.getTeachersFromUsersArray(users) ),
-    );
+    this.allAppUsers$ = this.store.select('users')
+      .pipe(
+        map(userState => this.mapDictionaryToEntities(userState.entities))
+      );
 
-    this.students$ = this.store.select('students').pipe(
-      map( (studentsState: StudentsState) => this.mapDictionaryToEntities(studentsState.entities))
-    );
+    this.allSchoolSubjects$ = this.store.select('subjects')
+      .pipe(
+        map(subjectsState => this.mapDictionaryToEntities(subjectsState.entities))
+      );
 
+    this.currentUser$ = this.store.select('users')
+      .pipe(
+        map(users => users.loggedInUser),
+        tap( val => this.currentUser = val)
+      );
+
+    this.teachers$ = this.store.select('users')
+      .pipe(
+        map( (entityObject: UsersState) => this.mapDictionaryToEntities(entityObject.entities) ),
+        map( users => this.getTeachersFromUsersArray(users) ),
+      );
+
+    this.students$ = this.store.select('students')
+      .pipe(
+        map( (studentsState: StudentsState) => this.mapDictionaryToEntities(studentsState.entities))
+      );
+
+  }
+
+  isAdminUser(user: User): boolean {
+    return user.role === UserRoles.Administrator;
   }
 
   getTeachersFromUsersArray(users: User[]): User[] {

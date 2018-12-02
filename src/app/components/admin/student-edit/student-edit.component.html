@@ -18,6 +18,21 @@
         </mat-form-field>
 
         <mat-form-field>
+            <input 
+                matInput 
+                [matDatepicker]="picker" 
+                [min]="minPickerDate" 
+                [max]="maxPickerDate"
+                placeholder="Choose a Date of Birth" 
+                formControlName="dateOfBirth">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker startView="multi-year" #picker></mat-datepicker>
+            <mat-error *ngIf="dateOfBirth.invalid && dateOfBirth.touched">
+                Please choose a date of birth for the student
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
             <mat-select placeholder="Select Gender" formControlName="gender">
                 <mat-option value="male">Male</mat-option>
                 <mat-option value="female">Female</mat-option>

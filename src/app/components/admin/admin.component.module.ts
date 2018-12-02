@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'new-student', component: StudentEditComponent },
   { path: 'subject-edit/:id', component: SubjectEditComponent },
   { path: 'user-edit/:id', component: UserEditComponent },
-  { path: 'students-edit/:id', component: StudentEditComponent }
+  { path: 'student-edit/:id', component: StudentEditComponent }
 ];
 
 @NgModule({

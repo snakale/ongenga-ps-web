@@ -9,7 +9,7 @@ import { Dictionary } from '@ngrx/entity/src/models';
 import { UsersState } from '../../../state/users/adaptor';
 import { map, catchError, distinctUntilChanged, tap } from 'rxjs/operators';
 import { UserRoles } from '../../../enums/roles.enum';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MAT_DATE_FORMATS } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { AppReturnType } from '../../../models/return-type.interface';
 import { Location } from '@angular/common';
@@ -22,7 +22,16 @@ import { SchoolClass } from 'src/app/enums/class.enum';
 @Component({
   selector: 'app-student-edit',
   templateUrl: `./student-edit.component.html`,
-  styleUrls: ['./student-edit.component.scss']
+  styleUrls: ['./student-edit.component.scss'],
+  providers: [{
+      provide: MAT_DATE_FORMATS, useValue: {
+          parse: {dateInput: {month: 'short', year: 'numeric', day: 'numeric'}},
+          display: {
+              dateInput: {month: 'short', year: 'numeric', day: 'numeric'},
+              monthYearLabel: {year: 'numeric'}
+          }
+      }
+  }]
 })
 export class StudentEditComponent implements OnInit {
 
@@ -36,6 +45,9 @@ export class StudentEditComponent implements OnInit {
 
     schoolGrades = SchoolGrade;
     schoolClasses = SchoolClass;
+
+    minPickerDate = new Date(1950, 0, 1);
+    maxPickerDate = new Date();
     
     constructor(
         private studentsService: StudentsService,
@@ -68,6 +80,7 @@ export class StudentEditComponent implements OnInit {
         surname: ['', Validators.required],
         studentGrade: ['', Validators.required],
         studentClass: ['', Validators.required],
+        dateOfBirth: ['', Validators.required],
         gender: ['', Validators.required],
         teacher: ['', Validators.required],
         parent1: parentOrGaurdian,
@@ -87,6 +100,10 @@ export class StudentEditComponent implements OnInit {
     ).    
     subscribe();
 
+  }
+
+  get dateOfBirth() {
+    return this.studentForm.get('dateOfBirth');
   }
 
   get studentClass() {
@@ -127,12 +144,50 @@ export class StudentEditComponent implements OnInit {
       tap( (student: Student) => {
         if ( student !== null && student !== undefined ) {
           this.pageTitle = `Edit Student:  ${student.names} ${student.surname}`;
-          this.studentForm.patchValue({names: student.names, surname: student.surname, teacher: student.registerTeacherId});
+          const func = this.patchStudentForm.bind(this);
+          func(student);
         } 
       })
     ).subscribe();
 
-    // Fetch students parents
+  }
+
+  async patchStudentForm(student: Student) {
+
+    this.studentForm
+            .patchValue({
+              names: student.names, 
+              surname: student.surname, 
+              teacher: student.registerTeacherId,
+              dateOfBirth: student.dateOfBirth,
+              gender: student.gender,
+              studentGrade: this.teachers$.value
+                              .find( teacher => teacher.id === student.registerTeacherId ).teacherGrade,
+              studentClass: this.teachers$.value
+                              .find( teacher => teacher.id === student.registerTeacherId ).teacherClass
+            });
+
+    const studentParent = await this.studentsService.getStudentParents(student.id);
+
+    if (studentParent.parent1) {
+      this.studentForm
+        .patchValue({
+          'parent1': {
+            name: studentParent.parent1.name,
+            surname: studentParent.parent1.surname,
+            contactDetails: studentParent.parent1.contactDetails
+          }
+        });
+    }
+
+    if (studentParent.parent2) {
+      this.studentForm.controls['parent2']
+        .patchValue({
+          name: studentParent.parent2.name,
+          surname: studentParent.parent2.surname,
+          contactDetails: studentParent.parent2.contactDetails
+        });
+    }
   }
 
   mapDictionaryToEntities(dictionary: Dictionary<any>): Array<any> {

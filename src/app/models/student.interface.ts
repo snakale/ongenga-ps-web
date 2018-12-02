@@ -8,6 +8,7 @@ export interface Student {
     registerTeacherId: number;
     grade: SchoolGrade;
     studentClass: SchoolClass;
+    dateOfBirth: Date;
     gender: string;
     parent1_id?: number;
     parent2_id?: number;

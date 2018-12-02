@@ -4,7 +4,7 @@
     </mat-toolbar>
 
     <mat-tab-group>
-      <mat-tab label="Subjects" *ngIf="isUserAdmin">
+      <mat-tab label="Subjects" *ngIf="isAdminUser(currentUser$ | async)">
         <br />
         <app-admin-subjects-list
           (removeSubject)="removeSubject($event)"
@@ -13,7 +13,7 @@
           [subjects]="allSchoolSubjects$ | async">
         </app-admin-subjects-list>
       </mat-tab>
-      <mat-tab label="System Users" *ngIf="isUserAdmin">
+      <mat-tab label="System Users" *ngIf="isAdminUser(currentUser$ | async)">
         <br />
         <app-admin-users-list
           (removeUser)="removeUser($event)"
@@ -23,7 +23,7 @@
         </app-admin-users-list>
       </mat-tab>
 
-      <mat-tab label="Students" *ngIf="isUserAdmin">
+      <mat-tab label="Students" *ngIf="isAdminUser(currentUser$ | async)">
         <app-students-list
           [listEditable]="true"
           [students]="students$ | async"

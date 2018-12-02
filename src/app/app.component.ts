@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
     
     this.store.dispatch( new LoadLoggedInUser() );
 
-    setTimeout( async () => this.addLogoutLink(), 200);
+    setTimeout( async () => this.addLogoutLink(), 2000);
   }
 
   async addLogoutLink() {
