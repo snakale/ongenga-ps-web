@@ -76,7 +76,10 @@ export class AdminComponent implements OnInit {
   }
 
   isAdminUser(user: User): boolean {
-    return user.role === UserRoles.Administrator;
+    if (user && user.role) {
+      return user.role === UserRoles.Administrator;
+    } 
+    return false;    
   }
 
   getTeachersFromUsersArray(users: User[]): User[] {

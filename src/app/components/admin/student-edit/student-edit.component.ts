@@ -69,12 +69,6 @@ export class StudentEditComponent implements OnInit {
       tap( teachers => this.teachers$.next(teachers) )
     ).subscribe();
 
-    const parentOrGaurdian = this.formBuilder.group({
-        name: [],
-        surname: [],
-        contactDetails: []
-    });
-
     this.studentForm = this.formBuilder.group({
         names: ['', Validators.required],
         surname: ['', Validators.required],
@@ -83,8 +77,18 @@ export class StudentEditComponent implements OnInit {
         dateOfBirth: ['', Validators.required],
         gender: ['', Validators.required],
         teacher: ['', Validators.required],
-        parent1: parentOrGaurdian,
-        parent2: parentOrGaurdian
+        parent1: this.formBuilder.group({
+          id: [],
+          name: [],
+          surname: [],
+          contactDetails: []
+        }),
+        parent2: this.formBuilder.group({
+          id: [],
+          name: [],
+          surname: [],
+          contactDetails: []
+        })
     });
 
     // If this is in student edit mode, populate form with values
@@ -155,17 +159,17 @@ export class StudentEditComponent implements OnInit {
   async patchStudentForm(student: Student) {
 
     this.studentForm
-            .patchValue({
-              names: student.names, 
-              surname: student.surname, 
-              teacher: student.registerTeacherId,
-              dateOfBirth: student.dateOfBirth,
-              gender: student.gender,
-              studentGrade: this.teachers$.value
-                              .find( teacher => teacher.id === student.registerTeacherId ).teacherGrade,
-              studentClass: this.teachers$.value
-                              .find( teacher => teacher.id === student.registerTeacherId ).teacherClass
-            });
+      .patchValue({
+        names: student.names, 
+        surname: student.surname, 
+        teacher: student.registerTeacherId,
+        dateOfBirth: student.dateOfBirth,
+        gender: student.gender,
+        studentGrade: this.teachers$.value
+                        .find( teacher => teacher.id === student.registerTeacherId ).teacherGrade,
+        studentClass: this.teachers$.value
+                        .find( teacher => teacher.id === student.registerTeacherId ).teacherClass
+      });
 
     const studentParent = await this.studentsService.getStudentParents(student.id);
 
@@ -173,6 +177,7 @@ export class StudentEditComponent implements OnInit {
       this.studentForm
         .patchValue({
           'parent1': {
+            id: studentParent.parent1.id,
             name: studentParent.parent1.name,
             surname: studentParent.parent1.surname,
             contactDetails: studentParent.parent1.contactDetails
@@ -181,11 +186,14 @@ export class StudentEditComponent implements OnInit {
     }
 
     if (studentParent.parent2) {
-      this.studentForm.controls['parent2']
+      this.studentForm
         .patchValue({
-          name: studentParent.parent2.name,
-          surname: studentParent.parent2.surname,
-          contactDetails: studentParent.parent2.contactDetails
+          'parent2': {
+            id: studentParent.parent2.id,
+            name: studentParent.parent2.name,
+            surname: studentParent.parent2.surname,
+            contactDetails: studentParent.parent2.contactDetails
+          }
         });
     }
   }

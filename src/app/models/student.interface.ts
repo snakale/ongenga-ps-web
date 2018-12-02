@@ -1,5 +1,6 @@
 import { SchoolClass } from '../enums/class.enum';
 import { SchoolGrade } from '../enums/grades.enum';
+import { Parent } from './parent.interface';
 
 export interface Student {
     id: number;
@@ -11,5 +12,7 @@ export interface Student {
     dateOfBirth: Date;
     gender: string;
     parent1_id?: number;
+    parent1?: Parent;
     parent2_id?: number;
+    parent2: Parent;
 }
